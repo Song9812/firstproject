@@ -3,9 +3,8 @@ import streamlit as st
 st.set_page_config(page_title="MBTI 대화 가이드", layout="centered")
 
 st.title("💬 MBTI 대화 가이드 & 예시 추천기")
-st.write("MBTI를 선택하면 해당 유형과 대화하기 좋은 주제, 말투, 예시를 확인할 수 있어요!")
+st.write("MBTI를 선택하고, 대화 스타일을 고르면 해당 유형과 대화하기 좋은 주제, 말투, 예시를 확인할 수 있어요!")
 
-# 모든 MBTI 유형
 mbti_list = [
     "INTJ", "INTP", "ENTJ", "ENTP",
     "INFJ", "INFP", "ENFJ", "ENFP",
@@ -13,7 +12,11 @@ mbti_list = [
     "ISTP", "ISFP", "ESTP", "ESFP"
 ]
 
-# 성격 요약
+styles = {
+    "공식적인 말투": "~합니다", 
+    "친근한 말투": "~해요"
+}
+
 mbti_traits = {
     "INTJ": "전략적이고 분석적인 성향으로 깊은 대화와 아이디어 공유를 선호합니다.",
     "INTP": "논리적이고 호기심 많은 성격으로, 새로운 이론과 개념을 탐구하는 것을 좋아합니다.",
@@ -33,85 +36,80 @@ mbti_traits = {
     "ESFP": "유쾌하고 외향적인 성격으로, 즐겁고 감각적인 대화를 좋아합니다."
 }
 
-# 대화 주제 추천
 mbti_topics = {
-    "INTJ": [("미래 기술", "미래를 설계하는 데 관심이 많기 때문입니다."),
-             ("전략 게임", "복잡한 사고를 자극하는 활동을 선호해서입니다."),
-             ("자기계발", "목표 지향적인 성격과 잘 맞기 때문입니다."),
-             ("사회 구조 변화", "큰 그림을 보는 능력과 관련된 주제입니다."),
-             ("철학적 대화", "깊고 의미 있는 주제를 좋아하기 때문입니다.")],
-    "INFP": [("감동적인 영화", "감성적이고 이야기 중심의 대화를 좋아합니다."),
-             ("자기 꿈 이야기", "이상과 가치를 나누는 데 관심이 많습니다."),
-             ("어릴 적 추억", "감정에 연결된 기억을 소중히 여깁니다."),
-             ("사랑과 관계", "깊이 있는 감정 교류를 선호합니다."),
-             ("예술과 창작", "상상력과 창의력을 표현할 수 있습니다.")],
-    # 나머지 유형은 위 이전 답변에서 복사해서 붙여넣기 가능
-    # ...
+    "INTJ": ["미래 기술", "전략 게임", "자기계발", "사회 구조 변화", "철학적 대화"],
+    "INTP": ["과학적 발견", "이론적 질문", "패턴 분석", "시스템 설계", "논리 퀴즈"],
+    "ENTJ": ["비즈니스 아이디어", "목표 설정", "리더십 이론", "생산성 방법", "정치 토론"],
+    "ENTP": ["창의적 발상", "유쾌한 토론", "가상 시나리오", "즉흥 연기", "미래 상상"],
+    "INFJ": ["인생 의미", "심리학 이야기", "도움 줄 수 있는 일", "사회 정의", "감정 공유"],
+    "INFP": ["감동적인 영화", "자기 꿈 이야기", "어릴 적 추억", "사랑과 관계", "예술과 창작"],
+    "ENFJ": ["사람과 사람 사이 이야기", "심리적인 연결", "긍정적인 변화", "격려와 응원", "공감 이야기"],
+    "ENFP": ["여행 이야기", "새로운 취미", "인생 도전기", "다양한 문화", "창의적 상상"],
+    "ISTJ": ["일상 루틴", "효율적인 방법", "일 처리 방식", "전통 가치", "계획 세우기"],
+    "ISFJ": ["가족 이야기", "추억 이야기", "도움이 되었던 경험", "정리정돈 방법", "감사한 일"],
+    "ESTJ": ["사회 규칙", "현실적인 해결책", "조직 이야기", "일하는 방식", "결정 내리는 법"],
+    "ESFJ": ["친구 관계", "감정 나누기", "행사 준비", "배려 경험", "공동체 이야기"],
+    "ISTP": ["기계나 도구", "논리적 문제", "재미있는 실험", "실용적인 팁", "분석 토론"],
+    "ISFP": ["자연 이야기", "감성적 음악", "예술 창작", "개인 공간", "감정 표현"],
+    "ESTP": ["스포츠 경기", "즉흥 활동", "현장 체험", "기억에 남는 사건", "유머 이야기"],
+    "ESFP": ["공연 경험", "맛집 추천", "즐거운 추억", "웃긴 이야기", "음악과 춤"]
 }
 
-# 대화 팁
 mbti_tips = {
-    "INTJ": "논리적이고 간결하게 정리된 말투로 접근하면 신뢰를 얻을 수 있어요.",
-    "INFP": "따뜻하고 진정성 있는 말로 다가가면 깊은 대화를 나누기 좋아요.",
-    # 나머지 유형 추가 가능
-    # ...
+    "INTJ": "논리적이고 간결하게 요점만 말하는 방식이 좋습니다.",
+    "INTP": "지적인 주제를 함께 탐구하는 듯한 말투가 효과적입니다.",
+    "ENTJ": "직접적이고 목표 중심적인 화법을 좋아합니다.",
+    "ENTP": "재미있고 유쾌하게, 다양한 아이디어를 던지며 접근하세요.",
+    "INFJ": "진심이 담긴 말투로 조심스럽게 접근하면 신뢰를 얻습니다.",
+    "INFP": "감성적이고 부드러운 말투가 잘 통합니다.",
+    "ENFJ": "다정하고 따뜻하게 관심을 표현하는 것이 좋습니다.",
+    "ENFP": "에너지 넘치고 열정적으로 이야기하면 연결됩니다.",
+    "ISTJ": "정확하고 신중한 말투를 사용하면 신뢰를 줍니다.",
+    "ISFJ": "배려 깊고 예의 바른 표현이 효과적입니다.",
+    "ESTJ": "논리적이고 실질적인 말투를 선호합니다.",
+    "ESFJ": "공감과 배려가 담긴 화법이 잘 맞습니다.",
+    "ISTP": "과장 없는 사실 기반 말투가 신뢰를 줍니다.",
+    "ISFP": "조용하고 섬세한 표현이 잘 어울립니다.",
+    "ESTP": "직관적이고 에너지 넘치는 말투로 접근하세요.",
+    "ESFP": "유쾌하고 감각적인 표현이 호감을 줍니다."
 }
 
-# 추천 말투 예시
-mbti_phrases = {
-    "INTJ": "“이런 주제에 대해 어떻게 생각하세요? 전략적인 관점이 궁금해서요.”",
-    "INFP": "“그때 느꼈던 감정이나 생각을 나눠줄 수 있어요? 듣고 싶어요.”",
-    # 나머지 유형 추가 가능
-    # ...
-}
-
-# 대화 예시 생성기
-def generate_conversation(mbti):
-    if mbti == "INTJ":
-        return [
-            "🙋‍♂️: 요즘 AI 기술이 사회에 어떤 영향을 줄지 생각해본 적 있어?",
-            "🧠 INTJ: 그거 꽤 흥미로운 주제네. 특히 노동 시장의 변화가 가장 큰 변수라고 봐."
-        ]
-    elif mbti == "INFP":
-        return [
-            "🙋‍♂️: 어릴 때 가장 기억에 남는 순간이 있어?",
-            "🌸 INFP: 음... 초등학교 때 친구랑 비 오는 날 우산 없이 걷던 기억이 아직도 따뜻해."
-        ]
+def generate_phrase(mbti, style):
+    if style == "공식적인 말투":
+        return f"{mbti} 유형에게는 '{mbti_tips[mbti]}' 말투로 접근하는 것이 좋습니다."
     else:
-        return [
-            "🙋‍♂️: 흥미로운 대화를 시작해보세요!",
-            "🙂: 상대방의 성격에 맞게 감정 또는 논리를 고려해 접근하면 좋아요."
-        ]
+        return f"{mbti}에게는 편하게 다가가며 '{mbti_tips[mbti].replace('습니다', '해요')}' 말투가 좋아요."
 
-# 상태 저장
+def generate_conversation_example(mbti, style):
+    intro = "🙋‍♂️: 요즘 관심 있는 주제가 뭐예요?"
+    reply = f"🙂 ({mbti}): 저는 '{mbti_topics[mbti][0]}' 같은 주제가 재미있더라고요!"
+    if style == "공식적인 말투":
+        return [intro, reply.replace("요", "니다")]
+    return [intro, reply]
+
 if "selected_mbti" not in st.session_state:
     st.session_state.selected_mbti = None
 
-# 버튼으로 MBTI 선택
 cols = st.columns(4)
 for i, mbti in enumerate(mbti_list):
     if cols[i % 4].button(mbti):
         st.session_state.selected_mbti = mbti
 
-# 결과 출력
+style = st.selectbox("🗨️ 대화 스타일을 선택하세요", list(styles.keys()))
+
 if st.session_state.selected_mbti:
     mbti = st.session_state.selected_mbti
     st.markdown(f"## 🧠 {mbti} 성격 요약")
-    st.info(mbti_traits.get(mbti, "정보 없음"))
+    st.info(mbti_traits[mbti])
 
-    st.markdown("### 🗣️ 대화에 어울리는 주제 & 이유")
-    topics = mbti_topics.get(mbti, [])
-    for i, (topic, reason) in enumerate(topics, 1):
-        st.markdown(f"**{i}. {topic}**  \n→ {reason}")
+    st.markdown("### 🗣️ 대화에 어울리는 주제")
+    for topic in mbti_topics[mbti]:
+        st.markdown(f"- {topic}")
 
-    st.markdown("### 💬 대화할 때 이런 말투를 써보세요")
-    st.success(mbti_tips.get(mbti, "말투 정보 없음"))
-
-    st.markdown("**📝 예시 표현:**")
-    st.write(mbti_phrases.get(mbti, "예시 문장 없음"))
+    st.markdown("### 💬 대화 팁")
+    st.success(generate_phrase(mbti, style))
 
     st.markdown("### 🎭 대화 예시")
-    convo = generate_conversation(mbti)
+    convo = generate_conversation_example(mbti, style)
     for line in convo:
         st.markdown(line)
-
