@@ -74,4 +74,24 @@ mbti_movies = {
     ],
     "ESTP": [
         ("베이비 드라이버", "음악과 액션이 어우러진 스피디한 영화"),
-        ("킹스맨", "스타일리시한 액션과
+        ("킹스맨", "스타일리시한 액션과 유머"),
+        ("분노의 질주", "스릴 넘치는 자동차 액션과 팀워크")
+    ],
+    "ESFP": [
+        ("위대한 개츠비", "화려함 뒤에 감춰진 외로움"),
+        ("셰프", "열정으로 인생을 바꾸는 이야기"),
+        ("라라랜드", "꿈과 현실, 열정의 향연")
+    ]
+}
+
+# Streamlit 앱 구성
+st.title("🎬 MBTI 기반 명작 영화 추천기")
+
+# MBTI 선택
+selected_mbti = st.selectbox("당신의 MBTI를 선택하세요:", list(mbti_movies.keys()))
+
+# 추천 영화 출력
+if selected_mbti:
+    st.subheader(f"✨ {selected_mbti} 추천 명작 영화:")
+    for title, desc in mbti_movies[selected_mbti]:
+        st.markdown(f"**🎥 {title}**  \n_{desc}_")
