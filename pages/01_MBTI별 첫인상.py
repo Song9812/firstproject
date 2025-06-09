@@ -1,9 +1,9 @@
 import streamlit as st
 
-st.set_page_config(page_title="✨ MBTI 첫인상 이미지", layout="centered")
+st.set_page_config(page_title="✨ MBTI 첫인상 이미지 느낌", layout="centered")
 
-st.title("✨ MBTI별 첫인상 이미지 서비스")
-st.write("아래 버튼에서 본인의 MBTI를 선택하면, MBTI별 첫인상 이미지를 보여드립니다!")
+st.title("✨ MBTI별 첫인상 느낌 표현")
+st.write("MBTI 버튼을 눌러 해당 유형의 첫인상을 이모지와 간단한 텍스트로 확인해보세요!")
 
 mbti_list = [
     "INTJ", "INTP", "ENTJ", "ENTP",
@@ -12,24 +12,23 @@ mbti_list = [
     "ISTP", "ISFP", "ESTP", "ESFP"
 ]
 
-# MBTI별 이미지 URL (인물 일러스트)
-mbti_image_urls = {
-    "INTJ": "https://www.urbanbrush.net/wp-content/uploads/2022/09/mbti-intj-%EC%9D%BC%EB%9F%AC%EC%8A%A4%ED%8A%B8-ai-%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C-download-mbti-intj-vector-500x500.jpg",
-    "INTP": "https://www.urbanbrush.net/wp-content/uploads/2022/09/mbti-intp-%EC%9D%BC%EB%9F%AC%EC%8A%A4%ED%8A%B8-ai-%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C-download-mbti-intp-vector-500x500.jpg",
-    "ENTJ": "https://www.urbanbrush.net/wp-content/uploads/2022/09/mbti-entj-%EC%9D%BC%EB%9F%AC%EC%8A%A4%ED%8A%B8-ai-%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C-download-mbti-entj-vector-500x500.jpg",
-    "ENTP": "https://www.urbanbrush.net/wp-content/uploads/2022/09/mbti-entp-%EC%9D%BC%EB%9F%AC%EC%8A%A4%ED%8A%B8-ai-%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C-download-mbti-entp-vector-500x500.jpg",
-    "INFJ": "https://www.urbanbrush.net/wp-content/uploads/2022/09/mbti-infj-%EC%9D%BC%EB%9F%AC%EC%8A%A4%ED%8A%B8-ai-%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C-download-mbti-infj-vector-500x500.jpg",
-    "INFP": "https://www.urbanbrush.net/wp-content/uploads/2022/09/mbti-infp-%EC%9D%BC%EB%9F%AC%EC%8A%A4%ED%8A%B8-ai-%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C-download-mbti-infp-vector-500x500.jpg",
-    "ENFJ": "https://www.urbanbrush.net/wp-content/uploads/2022/09/mbti-enfj-%EC%9D%BC%EB%9F%AC%EC%8A%A4%ED%8A%B8-ai-%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C-download-mbti-enfj-vector-500x500.jpg",
-    "ENFP": "https://www.urbanbrush.net/wp-content/uploads/2022/09/mbti-enfp-%EC%9D%BC%EB%9F%AC%EC%8A%A4%ED%8A%B8-ai-%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C-download-mbti-enfp-vector-500x500.jpg",
-    "ISTJ": "https://www.urbanbrush.net/wp-content/uploads/2022/09/mbti-istj-%EC%9D%BC%EB%9F%AC%EC%8A%A4%ED%8A%B8-ai-%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C-download-mbti-istj-vector-500x500.jpg",
-    "ISFJ": "https://www.urbanbrush.net/wp-content/uploads/2022/09/mbti-isfj-%EC%9D%BC%EB%9F%AC%EC%8A%A4%ED%8A%B8-ai-%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C-download-mbti-isfj-vector-500x500.jpg",
-    "ESTJ": "https://www.urbanbrush.net/wp-content/uploads/2022/09/mbti-estj-%EC%9D%BC%EB%9F%AC%EC%8A%A4%ED%8A%B8-ai-%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C-download-mbti-estj-vector-500x500.jpg",
-    "ESFJ": "https://www.urbanbrush.net/wp-content/uploads/2022/09/mbti-esfj-%EC%9D%BC%EB%9F%AC%EC%8A%A4%ED%8A%B8-ai-%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C-download-mbti-esfj-vector-500x500.jpg",
-    "ISTP": "https://www.urbanbrush.net/wp-content/uploads/2022/09/mbti-istp-%EC%9D%BC%EB%9F%AC%EC%8A%A4%ED%8A%B8-ai-%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C-download-mbti-istp-vector-500x500.jpg",
-    "ISFP": "https://www.urbanbrush.net/wp-content/uploads/2022/09/mbti-isfp-%EC%9D%BC%EB%9F%AC%EC%8A%A4%ED%8A%B8-ai-%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C-download-mbti-isfp-vector-500x500.jpg",
-    "ESTP": "https://www.urbanbrush.net/wp-content/uploads/2022/09/mbti-estp-%EC%9D%BC%EB%9F%AC%EC%8A%A4%ED%8A%B8-ai-%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C-download-mbti-estp-vector-500x500.jpg",
-    "ESFP": "https://www.urbanbrush.net/wp-content/uploads/2022/09/mbti-esfp-%EC%9D%BC%EB%9F%AC%EC%8A%A4%ED%8A%B8-ai-%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C-download-mbti-esfp-vector-500x500.jpg",
+mbti_first_impression = {
+    "INTJ": "🧠🔍 전략가, 깊고 냉철한 사고",
+    "INTP": "🤔💡 탐구자, 호기심 가득한 이론가",
+    "ENTJ": "🚀🎯 리더, 목표 지향적이고 강한 추진력",
+    "ENTP": "⚡💬 토론가, 창의적이고 즉흥적인 아이디어 뱅크",
+    "INFJ": "🌌💖 이상주의자, 깊은 공감과 통찰력",
+    "INFP": "🌿🎨 몽상가, 감성적이고 창의적인 영혼",
+    "ENFJ": "🌟🤝 소통가, 따뜻하고 사람 중심적",
+    "ENFP": "🔥🌈 열정가, 자유로운 영혼과 호기심",
+    "ISTJ": "📋🏛️ 관리자, 체계적이고 신뢰할 수 있는 존재",
+    "ISFJ": "🛡️💝 수호자, 헌신적이고 따뜻한 마음",
+    "ESTJ": "⚙️📊 집행자, 현실적이고 조직적인 리더",
+    "ESFJ": "🎉🤗 사교가, 친절하고 협력적인 사람",
+    "ISTP": "🔧🕵️‍♂️ 장인, 실용적이고 침착한 문제 해결사",
+    "ISFP": "🎸🌸 예술가, 감성적이고 조용한 아름다움",
+    "ESTP": "🏎️🎯 활동가, 즉흥적이고 에너지 넘치는 행동파",
+    "ESFP": "🎤🎊 연예인, 즐겁고 사교적인 분위기 메이커",
 }
 
 def mbti_button_grid(mbtis):
@@ -46,7 +45,7 @@ def main():
     if selected_mbti:
         st.markdown(f"### 🎯 선택한 MBTI: **{selected_mbti}**")
         st.markdown(f"### 첫인상 이미지 느낌")
-        st.image(mbti_image_urls[selected_mbti], caption=f"{selected_mbti} 이미지", use_column_width=True)
+        st.markdown(f"#### {mbti_first_impression[selected_mbti]}")
 
 if __name__ == "__main__":
     main()
